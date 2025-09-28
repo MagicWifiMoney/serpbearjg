@@ -1,0 +1,53 @@
+services:
+  - type: web
+    name: v-serpbear
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_TELEMETRY_DISABLED
+        value: 1
+      - key: USER
+        sync: false
+      - key: PASSWORD
+        sync: false
+      - key: SECRET
+        generateValue: true
+      - key: APIKEY
+        generateValue: true
+      - key: SESSION_DURATION
+        value: 24
+      - key: NEXT_PUBLIC_SCREENSHOTS
+        value: true
+      - key: NEXT_PUBLIC_WHITE_LABEL
+        value: false
+      - key: NEXT_PUBLIC_PLATFORM_NAME
+        value: SerpBear
+      - key: CRON_TIMEZONE
+        value: America/New_York
+      - key: CRON_MAIN_SCHEDULE
+        value: "0 0 0 * * *"
+      - key: CRON_FAILED_SCHEDULE
+        value: "0 0 */1 * * *"
+      - key: CRON_EMAIL_SCHEDULE
+        value: "0 0 6 * * *"
+      - key: LOG_LEVEL
+        value: info
+      - key: LOG_SUCCESS_EVENTS
+        value: true
+    # Auto-deploy when pushing to main branch
+    autoDeploy: true
+    # Node.js version
+    buildFilter:
+      paths:
+        - "**"
+      ignoredPaths: []
+    # Persistent disk for SQLite database and data
+    disk:
+      name: serpbear-data
+      mountPath: /app/data
+      sizeGB: 1
