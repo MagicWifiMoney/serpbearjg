@@ -1,10 +1,9 @@
 services:
   - type: web
     name: v-serpbear
-    runtime: node
+    runtime: docker
     plan: starter
-    buildCommand: npm ci && npm run build
-    startCommand: npm start
+    dockerfilePath: ./Dockerfile
     healthCheckPath: /
     envVars:
       - key: NODE_ENV
